@@ -1,1626 +1,0 @@
-<!DOCTYPE html>
-<html lang="ar">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>موسوعة التجويد الكبرى - النسخة الشاملة</title>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Fredoka+One&family=Noto+Sans+Arabic:wght@400;700&display=swap');
-
-        /* التنظيم الأساسي للموسوعة */
-        body, html { margin: 0; padding: 0; scroll-behavior: smooth; font-family: 'Noto Sans Arabic', sans-serif; background: #0f172a; color: white; overflow-x: hidden; }
-
-        /* الفهرس الرئيسي (Menu) */
-        .fahras-container { min-height: 100vh; display: flex; flex-direction: column; align-items: center; padding: 60px 20px; background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%); }
-        .fahras-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 15px; max-width: 1200px; width: 100%; margin-top: 40px; }
-        .chapter-card { background: rgba(255, 255, 255, 0.05); padding: 25px; border-radius: 25px; text-align: right; cursor: pointer; transition: 0.3s; border: 2px solid rgba(255, 255, 255, 0.1); }
-        .chapter-card:hover { background: rgba(56, 189, 248, 0.1); transform: translateY(-10px); border-color: #38bdf8; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .chapter-card h3 { margin: 0; font-family: 'Amiri'; font-size: 1.6rem; color: #38bdf8; }
-        .chapter-card p { margin: 5px 0 0; color: #94a3b8; font-family: 'Fredoka One'; font-size: 0.9rem; }
-
-        /* هيكل الفصول الأفقي (Slides) */
-        .chapter-section { width: 100vw; height: 100vh; display: flex; overflow-x: auto; scroll-snap-type: x mandatory; position: relative; scrollbar-width: none; }
-        .chapter-section::-webkit-scrollbar { display: none; }
-        .slide { flex: 0 0 100vw; height: 100vh; scroll-snap-align: start; display: flex; justify-content: center; align-items: center; padding: 20px; box-sizing: border-box; }
-        
-        /* تصميم البطاقات التعليمية */
-        .card { background: white; padding: 40px; border-radius: 50px; box-shadow: 0 25px 50px rgba(0,0,0,0.3); text-align: center; max-width: 850px; width: 90%; color: #333; border: 12px solid #38bdf8; overflow-y: auto; max-height: 85vh; }
-        
-        h1 { font-family: 'Amiri', serif; font-size: 2.5rem; color: #1e1b4b; margin: 10px 0; }
-        .explanation { background: #f1f5f9; padding: 20px; border-radius: 25px; border-right: 8px solid #38bdf8; text-align: right; margin: 15px 0; font-size: 1.2rem; line-height: 1.6; }
-        .sv-explanation { border-right: none; border-left: 8px solid #38bdf8; text-align: left; background: #f0f9ff; font-family: sans-serif; }
-        .letters { font-size: 3rem; font-weight: bold; color: #4338ca; margin: 20px 0; letter-spacing: 10px; }
-        .example { background: #f3f4f6; padding: 10px 30px; border-radius: 30px; display: inline-block; font-size: 2.2rem; border: 2px dashed #38bdf8; margin: 10px 0; }
-
-        /* أزرار الملاحة الثابتة */
-        .home-btn { position: fixed; top: 20px; left: 20px; z-index: 9999; background: #38bdf8; color: #0f172a; border: none; padding: 12px 25px; border-radius: 50px; font-weight: bold; cursor: pointer; }
-        .nav-container { position: sticky; bottom: 30px; left: 0; right: 0; display: flex; justify-content: center; gap: 10px; z-index: 100; pointer-events: none; }
-        .nav-row { display: flex; gap: 8px; pointer-events: auto; background: rgba(0,0,0,0.6); padding: 10px; border-radius: 20px; flex-wrap: wrap; justify-content: center; max-width: 90%; }
-        .nav-row button { padding: 8px 12px; border-radius: 12px; border: none; background: #38bdf8; color: #1e1b4b; cursor: pointer; font-weight: bold; font-size: 0.8rem; }
-
-        /* شبكة الحروف */
-        .letter-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(60px, 1fr)); gap: 10px; margin: 20px 0; }
-        .letter-item { background: #f3f4f6; padding: 10px; border-radius: 15px; font-weight: bold; font-size: 1.8rem; border: 1px solid #ddd; }
-        
-        /* حركات إضافية */
-        @keyframes bounce { from { transform: translateY(0); } to { transform: translateY(-20px); } }
-    </style>
-</head>
-<body>
-
-    <button class="home-btn" onclick="jumpTo('index')">🏠 MENU</button>
-
-    <div class="fahras-container" id="index">
-        <h1 style="color: #38bdf8; font-family: 'Amiri'; font-size: 3.5rem; margin-bottom: 0;">موسوعة التجويد</h1>
-        <p style="color: #94a3b8; font-family: 'Fredoka One';">Interaktiv Resa (Kapitel 1-15)</p>
-        <div class="fahras-grid">
-            <div class="chapter-card" onclick="jumpTo('cap1')"><h3>١. الحروف العربية</h3><p>Bokstäver</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap2')"><h3>٢. النون الساكنة</h3><p>Noon Sakinah</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap3')"><h3>٣. الميم الساكنة</h3><p>Mim Sakinah</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap4')"><h3>٤. النحلة غنة</h3><p>Ghunnah</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap5')"><h3>٥. بساط المد</h3><p>Madd</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap6')"><h3>٦. كرة القلقلة</h3><p>Qalqalah</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap7')"><h3>٧. التفخيم والترقيق</h3><p>Tafkhim/Tarqiq</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap8')"><h3>٨. أحكام الراء</h3><p>Ra-regler</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap9')"><h3>٩. المخارج</h3><p>Makharij</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap10')"><h3>١٠. الصفات</h3><p>Sifat</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap11')"><h3>١١. علاقات الحروف</h3><p>Relationer</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap12')"><h3>١٢. الوقف والابتداء</h3><p>Stop & Start</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap13')"><h3>١٣. السجدات</h3><p>Sajdah</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap14')"><h3>١٤. الآداب</h3><p>Etikett</p></div>
-            <div class="chapter-card" onclick="jumpTo('cap15')" style="border-color: gold;"><h3>🏆 التحدي النهائي</h3>
-</div>
-        </div>
-    </div>
-
-
-
-    <div id="cap1" class="chapter-section" style="background: #fca311;">
-        <div class="slide"><div class="card"><h1>١. رحلة الحروف</h1><div class="explanation">تخيل أن كل كلمة هي بناء، والحروف هي الطوب!</div><div style="font-size: 5rem;">✨</div></div></div>
-        <div class="slide"><div class="card"><h1>٢. أشكال الحروف 🎭</h1><div class="explanation">يتغير شكل الحرف حسب مكانه (بداية، وسط، نهاية).</div><div class="letter-grid"><div class="letter-item">أ</div><div class="letter-item">بـ</div><div class="letter-item">ـبـ</div><div class="letter-item">ـب</div></div></div></div>
-        <div class="slide"><div class="card"><h1>٣. نطق الحروف 🗣️</h1><div class="explanation">هيا نجرب نطق الحروف مع الفتحة!</div><div class="letter-grid"><div class="letter-item">أَ</div><div class="letter-item">بَ</div><div class="letter-item">تَ</div><div class="letter-item">ثَ</div></div></div></div>
-        <div class="slide"><div class="card"><h1>٤. الحروف الأشقياء 👋</h1><div class="explanation">٦ حروف لا تمسك يد من بعدها!</div><div class="letters" style="color: #e76f51;">أ و د ذ ر ز</div></div></div>
-        <div class="slide"><div class="card"><h2>Building Blocks 🧱</h2><div class="sv-explanation">Det finns 29 magiska bokstäver i arabiskan.</div></div></div>
-        <div class="slide"><div class="card"><h2>Busiga bokstäver 👋</h2><div class="sv-explanation">6 bokstäver håller inte hand med nästa bokstav.</div></div></div>
-        <div class="slide"><div class="card"><h1>نشاط ١: البحث 🔍</h1><div class="explanation">ابحث عن حرف (م) بأشكاله المختلفة في المصحف.</div><div class="letters">مـ ـمـ ـم</div></div></div>
-        <div class="slide"><div class="card"><h1>نشاط ٢: الكتابة ✍️</h1><div class="explanation">اكتب الحروف الستة المشاغبة.</div></div></div>
-        <div class="slide"><div class="card"><h1>نشاط ٣: المباراة 🗣️</h1><div class="explanation">سأقول حرفاً وأنت تنطق صوته القصير!</div></div></div>
-      <div class="slide"><div class="card"><div style="font-size: 5rem;">🎉</div><h1>أهلاً بك في عالم التجويد!</h1></div></div>
-
-    <div class="nav-container" style="position: sticky; bottom: 30px; left: 0; right: 0; z-index: 1000; pointer-events: none;">
-        <div class="nav-row" style="pointer-events: auto; display: flex; justify-content: center; gap: 5px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 20px;">
-            <button onclick="sideMove('cap1', 0)">1</button>
-            <button onclick="sideMove('cap1', 1)">2</button>
-            <button onclick="sideMove('cap1', 2)">3</button>
-            <button onclick="sideMove('cap1', 3)">4</button>
-            <button onclick="sideMove('cap1', 4)">Sve1</button>
-            <button onclick="sideMove('cap1', 5)">Sve2</button>
-            <button onclick="sideMove('cap1', 6)">🔍</button>
-            <button onclick="sideMove('cap1', 7)">🎉</button>
-        </div>
-    </div>
-
-</div>
-
-
-
-
-
-    <div id="cap2" class="chapter-section" style="background: #4c1d95;">
-        <div class="slide"><div class="card">
-
-
-<h1>البطل نون 🦸‍♂️</h1><div class="explanation">النون الساكنة والتنوين لديهما ٤ قوى سحرية!</div></div></div>
-        <div class="slide"><div class="card"><h1>١. الإظهار 💡</h1><div class="explanation">وضوح تام مع حروف الحلق.</div><div class="letters">ء هـ ع ح غ خ</div></div></div>
-        <div class="slide"><div class="card"><h1>٢. الإدغام 🍦</h1><div class="explanation">ذوبان في حروف كلمة (يرملون).</div><div class="letters">ي ر م ل و ن</div></div></div>
-        <div class="slide"><div class="card"><h1>٣. الإقلاب 🪄</h1><div class="explanation">تتحول النون إلى ميم عند حرف (ب).</div><div class="example">مِن بَعْدِ</div></div></div>
-        <div class="slide"><div class="card"><h1>٤. الإخفاء 🙈</h1><div class="explanation">اختباء الصوت في الأنف (غنة).</div><div class="example">مِن سِجِّيلٍ</div></div></div>
-        <div class="slide"><div class="card"><h2>Hjälten Noon 🦸‍♂️</h2><div class="sv-explanation">Noon Sakinah ändrar ljud beroende på sin granne.</div></div></div>
-        <div class="slide"><div class="card"><h2>Tydlighet 💡</h2><div class="sv-explanation">Izhar betyder att läsa N tydligt.</div></div></div>
-        <div class="slide"><div class="card"><h2>Förvandling 🪄</h2><div class="sv-explanation">Iqlab ändrar N till M.</div></div></div>
-        <div class="slide"><div class="card"><h1>نشاط ١: رادار 🔍</h1><div class="example">أَنْعَمْتَ</div><p>ما هو الحكم هنا؟</p></div></div>
-        <div class="slide"><div class="card"><h1>نشاط ٢: التحدي 🪄</h1><p>انطق (مِن بَعْدِ) بطريقة صحيحة.</p></div></div>
-        <div class="slide"><div class="card"><h1>بطل الأحكام 🏆</h1><p>أنت الآن تتقن أسرار النون!</p></div></div>
-
-        <div class="nav-container"><div class="nav-row">
-            <button onclick="sideMove('cap2', 0)">1</button><button onclick="sideMove('cap2', 1)">💡</button><button onclick="sideMove('cap2', 2)">🍦</button><button onclick="sideMove('cap2', 3)">🪄</button><button onclick="sideMove('cap2', 4)">🙈</button><button onclick="sideMove('cap2', 8)">🔍</button><button onclick="sideMove('cap2', 10)">🏆</button>
-        </div></div>
-    </div>
-
-
-
-<div id="cap3" class="chapter-section" style="background: #065f46;">
-        
-        <div class="slide">
-            <div class="card" style="border-color: #10b981;">
-                <div style="font-size: 5rem;">👸</div>
-                <h1>١. الملكة ميم الساكنة</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> الميم الساكنة (مْ) هي ملكة هادئة تسكن الشفتين. لديها 3 قوانين فقط تجعل قراءتنا رائعة!
-                </div>
-                <p>Mim Sakinah (مْ) bor vid läpparna och har 3 regler.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #10b981;">
-                <h1>٢. قانون التوأم (الإدغام)</h1>
-                <div class="explanation">
-                    عندما تقابل الملكة ميم مديراً آخر يشبهها (م)، يذوبان معاً ويصدران صوتاً طويلاً وجميلاً.
-                </div>
-                <div class="letters">م + م</div>
-                <div class="example">لَهُم مَّا يَشَاءُونَ</div>
-                <p><b>Idgham:</b> Smälter ihop med ett annat M.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #10b981;">
-                <h1>٣. قانون الغميضة (الإخفاء)</h1>
-                <div class="explanation">
-                    إذا قابلت الملكة ميم حرف (ب)، فإنها تخبئ صوتها قليلاً خلف الشفتين بنعومة.
-                </div>
-                <div class="letters">م + ب</div>
-                <div class="example">تَرْمِيهِم بِحِجَارَةٍ</div>
-                <p><b>Ikhfa:</b> Gömmer sig lite vid bokstaven B.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #10b981;">
-                <h1>٤. قانون الوضوح (الإظهار)</h1>
-                <div class="explanation">
-                    مع باقي الحروف، تظهر الملكة ميم بوضوح تام وقوة! احذر من حرفي (و، ف)، لا تجعل الملكة تختفي عندهما!
-                </div>
-                <p><b>Izhar:</b> Syns tydligt vid alla andra bokstäver.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #38bdf8;">
-                <h2>Drottning Mim Summary 👸</h2>
-                <div class="sv-explanation">
-                    1. <b>Idgham:</b> M + M (Smälta ihop).<br>
-                    2. <b>Ikhfa:</b> M + B (Gömma ljudet).<br>
-                    3. <b>Izhar:</b> M + alla andra (Tydlighet).
-                </div>
-                <div style="font-size: 3rem; margin-top: 10px;">👑</div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #fbbf24;">
-                <div style="font-size: 4rem;">🎮</div>
-                <h1>نشاط: أطبق شفتيك</h1>
-                <div class="explanation" style="text-align: center; border-right: none; border-left: 8px solid #fbbf24;">
-                    انطق كلمة (أَمْ لَمْ). هل شعرت كيف أطبقت الملكة ميم شفتيها بوضوح؟ هذا هو الإظهار!
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #f87171;">
-                <div style="font-size: 4rem;">🕵️‍♂️</div>
-                <h1>نشاط: فخ الواو والفاء</h1>
-                <div class="explanation" style="text-align: center; border-right: none; border-left: 8px solid #f87171;">
-                    ابحث في سورة "الفيل" عن ميم بعدها (و) أو (ف). هل استطعت نطقها بوضوح دون أن تختفي؟
-                </div>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-row">
-                <button onclick="sideMove('cap3', 0)">الملكة👸</button>
-                <button onclick="sideMove('cap3', 1)">🍦توأم</button>
-                <button onclick="sideMove('cap3', 2)">🙈غميضة</button>
-                <button onclick="sideMove('cap3', 3)">💡وضوح</button>
-                <button onclick="sideMove('cap3', 4)">Sve🇸🇪</button>
-                <button onclick="sideMove('cap3', 5)">🎮لعبة1</button>
-                <button onclick="sideMove('cap3', 6)">🕵️‍♂️لعبة2</button>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-<div id="cap4" class="chapter-section" style="background: #fbbf24;">
-        
-        <div class="slide">
-            <div class="card" style="border-color: #f59e0b;">
-                <div style="font-size: 5rem;">🐝</div>
-                <h1>١. سر النحلة غنة</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> الغنة هي صوت رنين جميل يخرج من الأنف (الخيشوم). هي مثل "طنين النحلة" الذي يجعل الحروف تغني!
-                </div>
-                <p>Ghunnah är ett surrande ljud som bor i näsan.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #f59e0b;">
-                <h1>٢. مَن يحب الغنة؟</h1>
-                <div class="explanation">
-                    الغنة لا تحب إلا حرفين فقط: <b>(ن) و (م)</b>. عندما نضع فوقهما "الشدة" تصبح الغنة قوية جداً!
-                </div>
-                <div style="font-size: 4rem; color: #f59e0b; font-weight: bold;">نّ — مّ</div>
-                <p>Det kommer bara vid N och M med Shaddah.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #f59e0b;">
-                <h1>٣. ميزان الوقت ⏱️</h1>
-                <div class="explanation">
-                    الغنة كريمة جداً، تعطينا "حركتين" من الوقت (ثانيتين تقريباً) لنستمتع بصوتها الجميل.
-                </div>
-                <div class="example">إِنَّ — عَمَّ</div>
-                <p>Vi håller ljudet i 2 sekunder!</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #2563eb;">
-                <h2>Bi-ljudet Ghunnah 🐝</h2>
-                <div class="sv-explanation">
-                    Ghunnah är ljudet som låter som ett bi. <br>
-                    1. Finns bara i <b>N (نّ)</b> och <b>M (مّ)</b>. <br>
-                    2. Ljudet kommer från näsan. <br>
-                    3. Räkna till 2 på fingrarna!
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #d97706;">
-                <div style="font-size: 4rem;">👃</div>
-                <h1>نشاط: اختبار الأنف</h1>
-                <div class="explanation" style="text-align: center; border-right: none; border-left: 8px solid #d97706;">
-                    قل (إِنَّ) ثم أغلق أنفك بيدك فجأة. إذا انقطع الصوت، فـ "النحلة غنة" موجودة وتعمل بنجاح!
-                </div>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-row">
-                <button onclick="sideMove('cap4', 0)">🐝 النحلة</button>
-                <button onclick="sideMove('cap4', 1)">👬 الأصدقاء</button>
-                <button onclick="sideMove('cap4', 2)">⏱️ الوقت</button>
-                <button onclick="sideMove('cap4', 3)" style="background:#2563eb">Sve 🇸🇪</button>
-                <button onclick="sideMove('cap4', 4)" style="background:#d97706">لعبة 👃</button>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-<div id="cap5" class="chapter-section" style="background: #6d28d9;">
-        
-        <div class="slide">
-            <div class="card" style="border-color: #8b5cf6;">
-                <div style="font-size: 5rem; animation: bounce 2s infinite;">🎢</div>
-                <h1>🎢 رحلة بساط الريح (المد)</h1>
-                <div class="explanation">المد هو إطالة الصوت بحروف سحرية تجعل القراءة كأنها نغم جميل. لنكتشف أنواع البساط!</div>
-                <p>Madd betyder att förlänga ljudet på ett vackert sätt.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #8b5cf6;">
-                <h1>١. حروف البساط الثلاثة</h1>
-                <div class="explanation">لا يتحرك البساط إلا بثلاثة حروف: الألف الساكنة المفتوح ما قبلها، الواو الساكنة المضموم ما قبلها، والياء الساكنة المكسور ما قبلها.</div>
-                <div class="letters">نُـو - حِـي - هَـا</div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #8b5cf6;">
-                <h1>٢. المد الطبيعي (الأصلي)</h1>
-                <div class="explanation">هو بساط هادئ، لا يحتاج لسبب (همزة أو سكون). نمده حركتين فقط (ثانيتين).</div>
-                <div class="example">قَالَ - يَقُولُ - قِيلَ</div>
-                <p class="timer">⏱️ الوقت: حركتان</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #8b5cf6;">
-                <h1>٣. المد المتصل (بساط الهمزة)</h1>
-                <div class="explanation">عندما تجتمع الهمزة مع حرف المد في "كلمة واحدة". هنا البساط يرتفع أكثر!</div>
-                <div class="example">جَـاءَ - السَّمَـاء</div>
-                <p class="timer">⏱️ الوقت: 4 أو 5 حركات</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #8b5cf6;">
-                <h1>٤. المد المنفصل (بساط الجيران)</h1>
-                <div class="explanation">حرف المد في آخر كلمة، والهمزة في أول الكلمة التالية. جيران يسلمون على بعضهم.</div>
-                <div class="example">يَا أَيُّهَا - فِي أُمِّهَا</div>
-                <p class="timer">⏱️ الوقت: 4 أو 5 حركات</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #8b5cf6;">
-                <h1>٥. مد البدل</h1>
-                <div class="explanation">عندما تسبق الهمزة حرف المد. كأن الهمزة تدفع البساط من الخلف!</div>
-                <div class="example">آمَنُوا - أُوتُوا - إِيمَانًا</div>
-                <p class="timer">⏱️ الوقت: حركتان</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #8b5cf6;">
-                <h1>٦. العارض للسكون (بساط التوقف)</h1>
-                <div class="explanation">عندما نقرر التوقف عند كلمة آخرها حرف مد وبعده حرف سكن بسبب الوقف.</div>
-                <div class="example">العَالَمِينَ - تَعْلَمُونَ</div>
-                <p class="timer">⏱️ الوقت: 2 أو 4 أو 6 حركات</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #8b5cf6;">
-                <h1>٧. المد اللازم (البساط العملاق)</h1>
-                <div class="explanation">أطول مد! يأتي عندما يكون بعد حرف المد سكون أصلي أو شدة. يجب مده بقوة!</div>
-                <div class="example">الحَـاقَّة - الضَّـالِّين</div>
-                <p class="timer">⏱️ الوقت: 6 حركات دائماً</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #8b5cf6;">
-                <h1>٨. بساط الحروف المقطعة</h1>
-                <div class="explanation">يوجد في الحروف التي تبدأ بها بعض السور. مثل (ن، ق، ص).</div>
-                <div class="example">الـم - كـهـيـعـص</div>
-                <p class="timer">⏱️ الوقت: 6 حركات</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #8b5cf6;">
-                <h1>٩. مد الصلة</h1>
-                <div class="explanation">يخص هاء الغائب (ـه). إذا كانت بين حرفين متحركين، نمط صوتها قليلاً.</div>
-                <div class="example">إِنَّـهُۥ كَانَ - بِـهِۦ بَصِيرًا</div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #2563eb;">
-                <h2>Madd-guiden (🎢)</h2>
-                <div class="sv-explanation">
-                    1. <b>Tabi'i:</b> Naturligt (2 sek).<br>
-                    2. <b>Muttasil:</b> Hamza i samma ord (4-5 sek).<br>
-                    3. <b>Munfasil:</b> Hamza i nästa ord (4-5 sek).<br>
-                    4. <b>Lazim:</b> Jättemattan (6 sek!).
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #db2777;">
-                <div style="font-size: 4rem;">🎮</div>
-                <h1>نشاط: عدّ الحركات</h1>
-                <div class="explanation" style="text-align: center;">استخدم أصابع يدك (1, 2, 3, 4, 5, 6) وأنت تنطق (الضَّـالِّين). هل استطعت الوصول للرقم 6؟</div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #db2777;">
-                <div style="font-size: 4rem;">🌊</div>
-                <h1>نشاط: ركوب الموجة</h1>
-                <div class="explanation" style="text-align: center;">ارسم بيدك موجة في الهواء عندما ترى علامة (~) فوق حرف المد وطول صوتك مع حركة يدك.</div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #db2777;">
-                <h1>🕵️‍♂️ نشاط: صياد المد اللازم</h1>
-                <div class="explanation" style="text-align: center;">ابحث في سورة "الفاتحة" عن المد اللازم (البساط العملاق). أين وجدته؟</div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #10b981;">
-                <div style="font-size: 5rem;">🏁</div>
-                <h1>🏁 ختام الرحلة</h1>
-                <p>أنت الآن طيار ماهر لبساط المد! قراءتك أصبحت موزونة وجميلة جداً.</p>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-row">
-                <button onclick="sideMove('cap5', 2)">🌱طبيعي</button>
-                <button onclick="sideMove('cap5', 3)">🤝متصل</button>
-                <button onclick="sideMove('cap5', 4)">🏡منفصل</button>
-                <button onclick="sideMove('cap5', 7)">🐘لازم</button>
-                <button onclick="sideMove('cap5', 10)" style="background:#2563eb">Sve🇸🇪</button>
-                <button onclick="sideMove('cap5', 11)" style="background:#db2777">🎮لعبة</button>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
- <div id="cap6" class="chapter-section" style="background: #0ea5e9;">
-        
-        <div class="slide">
-            <div class="card" style="border-color: #38bdf8;">
-                <div style="font-size: 5rem; animation: bounce 1s infinite alternate;">🏀</div>
-
-                <h1>١. سر القلقلة القفازة</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> القلقلة هي صوت "اضطراب" يحدث للحرف عندما يكون ساكناً. تخيل الحرف مثل كرة السلة، يضرب الأرض ويقفز بسرعة ليصدر صوتاً قوياً!
-                </div>
-                <p>Qalqalah är som när en basketboll studsar mot marken.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #38bdf8;">
-                <h1>٢. أبطال فريق القفز</h1>
-                <div class="explanation">
-                    فريق القلقلة يتكون من ٥ حروف بطلة، نجمعها في كلمة: <b>(قُطْبُ جَد)</b>. هذه الحروف تحب القفز فقط عندما تلبس "تاج السكون" ( ْ ) أو نقف عليها.
-                </div>
-                <div class="letters" style="color: #0284c7;">ق ط ب ج د</div>
-                <p>Bokstäverna för Qalqalah är: Q, T, B, J, D.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #38bdf8;">
-                <h1>٣. أنواع القفزة ⚡</h1>
-                <div class="explanation">
-                    ١. <b>قفزة صغيرة:</b> إذا كان الحرف في وسط الكلمة.<br>
-                    ٢. <b>قفزة كبيرة:</b> إذا كان الحرف في آخر الكلمة ووقفنا عنده.
-                </div>
-                <div class="example">يَقْـطَعُ (صغيرة)</div>
-                <div class="example">الفَلَقْ (كبيرة)</div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #0ea5e9;">
-                <h2>Studsljudet Qalqalah 🏀</h2>
-                <div class="sv-explanation">
-                    1. <b>Bokstäver:</b> Q, T, B, J, D (ق ط ب ج د).<br>
-                    2. <b>Ljudet:</b> Vibrerar till för att höras tydligt.<br>
-                    3. <b>Liten studs:</b> I mitten av ett ord.<br>
-                    4. <b>Stor studs:</b> I slutet av en vers.
-                </div>
-                
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #059669;">
-                <div style="font-size: 5rem;">⛹️‍♂️</div>
-                <h1>نشاط ١: مباراة القفز</h1>
-                <div class="explanation" style="text-align: center;">
-                    قف بجانب كرسيك. عندما تنطق كلمة فيها قلقلة (مثل: أبْ)، اقفز قفزة صغيرة للأعلى!
-                </div>
-                <p>Gör ett litet hopp varje gång du säger en bokstav med Qalqalah!</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #059669;">
-                <div style="font-size: 5rem;">🗣️</div>
-                <h1>نشاط ٢: صدى الصوت</h1>
-                <div class="explanation" style="text-align: center;">
-                    ضع يديك حول فمك كأنك في مغارة وقل (أقْ.. أقْ). هل شعرت كيف ارتد الصوت خلف أسنانك؟ هذا هو سر القلقلة!
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: gold;">
-                <div style="font-size: 5rem;">🏆</div>
-                <h1>بطل القفز بالتجويد</h1>
-                <p>أنت الآن تعرف كيف تجعل الحروف تقفز بجمال وقوة. استمر في التمرين!</p>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-row">
-
-                <button onclick="sideMove('cap6', 0)">🏀البداية</button>
-                <button onclick="sideMove('cap6', 1)">🏆الأبطال</button>
-                <button onclick="sideMove('cap6', 2)">⚡الأنواع</button>
-                <button onclick="sideMove('cap6', 3)" style="background:#2563eb">Sve🇸🇪</button>
- <button onclick="sideMove('cap6', 5)" style="background:#059669">🎮لعبة</button>
-<button onclick="sideMove('cap6', 6)" style="background:#059669">صدى 🗣️</button>
-                <button onclick="sideMove('cap6', 6)" style="background:#059669">🎮لعبة</button>
-            </div>
-        </div>
-
-    </div>
-
-
-
-
-
-<div id="cap7" class="chapter-section" style="background: #4338ca;">
-        
-        <div class="slide">
-            <div class="card" style="border-color: #4338ca;">
-                <div style="font-size: 5rem;">🏋️‍♂️🪶</div>
-                <h1>التفخيم والترقيق</h1>
-                <div class="explanation">
-                    هل تعلم أن الحروف لها أوزان؟ بعضها "سمين" يملأ الفم بالصوت ونسميه <b>التفخيم</b>، وبعضها "نحيف" ورقيق ونسميه <b>الترقيق</b>.
-                </div>
-                <p>Bokstäver har "vikt": Tjocka (Tafkhim) eller Smala (Tarqiq).</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #4338ca;">
-                <div style="font-size: 5rem;">🐘</div>
-                <h1>حروف التفخيم (السمينة)</h1>
-                <div class="explanation">
-                    هذه الحروف صوتها قوي، نجمعها في جملة: <b>"خُصَّ ضَغْطٍ قِظْ"</b>. تخيل أن فمك ممتلئ بكرة كبيرة عند نطقها!
-                </div>
-                <div class="example">خَـالِدِينَ — الصَّـادِقِينَ</div>
-                <p>De 7 Tjocka Jättarna: (خ، ص، ض، غ، ط، ق، ظ)</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #4338ca;">
-                <div style="font-size: 5rem;">🦋</div>
-                <h1>حروف الترقيق (النحيفة)</h1>
-                <div class="explanation">
-                    باقي الحروف كلها نحيفة ورقيقة، تحب الابتسامة عند نطقها. اجعل صوتك خفيفاً كالفراشة!
-                </div>
-                <div class="example">بَـاب — تِـين — سَـلام</div>
-                <p>Resten av bokstäverna är lätta som fjädrar.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #be123c;">
-                <div style="font-size: 5rem;">🏋️‍♂️🪶</div>
-                <h1 style="color: #be123c;">Tjocka & Smala</h1>
-                <div class="sv-explanation" style="border-left-color: #be123c;">
-                    <b>Tafkhim:</b> Fyller hela munnen med ljud (Tjocka).<br>
-                    <b>Tarqiq:</b> Låter lätta och mjuka (Smala).<br><br>
-                    Låtsas att du har en tennisboll i munnen för de tjocka bokstäverna!
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #15803d;">
-                <div style="font-size: 4rem;">💪</div>
-                <h1>تحدي القوة</h1>
-                <p><b>Ar:</b> عندما تنطق حرفاً سميناً، انفخ خديك قليلاً! وعندما تنطق حرفاً نحيفاً، ابتسم.</p>
-                <p><b>Sv:</b> Spänn musklerna för tjocka bokstäver, slappna av och le för smala.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #15803d;">
-                <div style="font-size: 4rem;">🍎</div>
-                <h1>اختبار الأكل</h1>
-                <p>انطق (خـ) لتشعر بالصوت يملأ فمك، ثم انطق (سـ) لتشعر بالصوت يخرج من بين أسنانك فقط.</p>
-                <p>Känner du skillnaden i hur ljudet fyller munnen?</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #15803d;">
-                <div style="font-size: 4rem;">🔍</div>
-                <h1>صائد العمالقة</h1>
-                <p>ابحث في سورة "الضحى" عن حروف التفخيم (السمينة). كم عملاقاً وجدت؟</p>
-                <p>Leta efter "jättarna" i Surah Ad-Duha!</p>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-row">
-                <button onclick="sideMove('cap7', 0)">الأوزان🏋️‍♂️</button>
-                <button onclick="sideMove('cap7', 1)">السمينة🐘</button>
-                <button onclick="sideMove('cap7', 2)">النحيفة🦋</button>
-                <button onclick="sideMove('cap7', 3)" style="background:#be123c; color:white;">Sve🇸🇪</button>
-                <button onclick="sideMove('cap7', 4)" style="background:#15803d; color:white;">تحدي💪</button>
-                <button onclick="sideMove('cap7', 6)" style="background:#15803d; color:white;">بحث🔍</button>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-<div id="cap8" class="chapter-section" style="background: #be185d;">
-        
-        <div class="slide">
-            <div class="card" style="border-color: #be185d;">
-                <div class="character">🦎</div>
-                <h1>حرف الراء المتقلب</h1>
-                <div class="explanation">
-                    حرف الراء (ر) يشبه الحرباء! أحياناً يكون <b>مفخماً</b> (سميناً) إذا كان عليه فتحة أو ضمة، وأحياناً يكون <b>مرققاً</b> (نحيفاً) إذا كان تحته كسرة.
-                </div>
-                <div class="example">رَمَضَان (سمين) / رِحْلَة (نحيف)</div>
-                <p>Bokstaven Ra (ر) är som en kameleont!</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #be185d;">
-                <div class="character">👑</div>
-                <h1>لام اسم الله</h1>
-                <div class="explanation">
-                    كلمة "اللَّه" لها هيبة! ننطق اللام سمينة وقوية إذا كان قبلها فتحة أو ضمة، وننطقها رقيقة إذا كان قبلها كسرة.
-                </div>
-                <div class="example">عَبْدُ اللَّه (قوي) / بِسْمِ اللَّه (رقيق)</div>
-                <p>Ordet "Allah" är speciellt.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #be185d;">
-                <div class="character">⚖️</div>
-                <h1>ميزان الصوت</h1>
-                <div class="explanation">
-                    تذكر دائماً: الفتحة والضمة تجعل الصوت قوياً 🦾<br>والكسرة تجعل الصوت رقيقاً وناعماً 🦋
-                </div>
-                <p>Ljudets balans: Fatha/Damma ger styrka.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card sv-card" style="border-color: #ea580c;">
-                <div class="character">🦎👑</div>
-                <h1 style="color: #9a3412;">Ra & Allah Rules</h1>
-                <div class="sv-explanation" style="border-left-color: #ea580c;">
-                    * **Ra (ر)**: Tjock med A/U, smal med I.
-                    * **Allah**: L-ljudet är mäktigt efter A/U, mjukt efter I.
-                    * **Regel**: A/U ger styrka 🦾, I ger ett leende 🦋.
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #059669;">
-                <div class="character">😊</div>
-                <h1>لعبة الابتسامة</h1>
-                <p><b>Ar:</b> عندما تنطق "بِسْمِ اللَّه" أو "رِحْلَة"، ابتسم بوضوح لتجعل الصوت نحيفاً!</p>
-                <p><b>Sv:</b> Le stort när du säger "Bismillah" eller "Rihla"!</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #059669;">
-                <div class="character">📣</div>
-                <h1>الملك وصل!</h1>
-                <p><b>Ar:</b> عندما تقرأ "قَالَ اللَّه" انفخ خديك قليلاً لتجعل اسم الله يبدو ضخماً ومهيباً!</p>
-                <p><b>Sv:</b> Gör din röst djup och mäktig som om du tillkännager att kungen kommer!</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #059669;">
-                <div class="character">🔍</div>
-                <h1>المحقق</h1>
-                <p>ابحث في سورة "الفاتحة" عن اسم (اللَّه). هل صوته سمين أم نحيف؟ ولماذا؟</p>
-                <p>Titta på bokstaven precis innan!</p>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-row">
-                <button onclick="sideMove('cap8', 0)">الراء🦎</button>
-                <button onclick="sideMove('cap8', 1)">اسم الله👑</button>
-                <button onclick="sideMove('cap8', 2)">الميزان⚖️</button>
-                <button onclick="sideMove('cap8', 3)" style="background:#ea580c; color:white;">Sve🇸🇪</button>
-                <button onclick="sideMove('cap8', 4)" style="background:#059669; color:white;">ابتسم😊</button>
-                <button onclick="sideMove('cap8', 6)" style="background:#059669; color:white;">بحث🔍</button>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-<div id="cap9" class="chapter-section" style="background: #0c4a6e; position: sticky;">
-        
-        <div class="slide">
-            <div class="card" style="border-color: #38bdf8;">
-                <div style="font-size: 5rem;">🗺️</div>
-                <h1>ما هو مخرج الحرف؟</h1>
-                <div class="explanation">
-                    المخرج هو <b>عُنوان الحرف</b>، وهو المكان الدقيق الذي يخرج منه صوته. لكي تقرأ القرآن كالأبطال، يجب أن تعرف أين يسكن كل حرف في فمك!
-                </div>
-                <p style="color: #64748b;">إذا نطقنا الحرف من "بيته" الصحيح، سيصبح صوتنا جميلاً ومتقناً.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card sv-card" style="border-color: #0ea5e9;">
-                <div style="font-size: 5rem;">📍</div>
-                <h1>Vad är en Makhraj?</h1>
-                <div class="sv-explanation" style="border-left: 8px solid #0ea5e9;">
-                    En Makhraj är bokstavens <b>adress</b>. Det är den exakta platsen i din mun eller hals där ljudet skapas. För att läsa Koranen perfekt måste vi veta var varje bokstav bor!
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #38bdf8;">
-                <h1>خريطة مدينة الفم | Mun-kartan</h1>
-                <div style="background: #f8fafc; padding: 20px; border-radius: 20px; border: 2px dashed #38bdf8; margin: 20px 0;">
-                    [رسم توضيحي شامل يظهر: الجوف، الحلق، اللسان، الشفتان، الخيشوم]
-                </div>
-                <p>لدينا <b>٥ مناطق كبرى</b> (بيوت رئيسية) تسكنها جميع الحروف العربية.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 4rem;">💨</div>
-                <h1>١. الجوف (الفراغ)</h1>
-                <div class="explanation">هو الفضاء الموجود داخل الحلق والفم. تخرج منه حروف المد التي تطير في الهواء:</div>
-                <div class="letters">ا - و - ي</div>
-                <p>Al-Jawf: Det stora luftrummet i munnen.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 4rem;">🦒</div>
-                <h1>٢. الحلق (الرقبة)</h1>
-                <div class="explanation">يسكن فيه ٦ حروف تخرج من أعماق الرقبة إلى أعلاها:</div>
-                <div class="letters">ء هـ - ع ح - غ خ</div>
-                <p>Al-Halq: De 6 bokstäverna från halsen.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 4rem;">👅</div>
-                <h1>٣. اللسان (الملك)</h1>
-                <div class="explanation">أكبر بيت! يسكنه ١٨ حرفاً. يستخدم اللسان أجزاءه المختلفة (طرف، وسط، حافة) ليصنع الأصوات.</div>
-                <div class="letters">١٨ حرفاً</div>
-                <p>Al-Lisan: Tungan hjälper till med 18 bokstäver.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 4rem;">👄</div>
-                <h1>٤. الشفتان (البوابة)</h1>
-                <div class="explanation">هنا تسكن الحروف التي تحتاج للشفاه لتخرج:</div>
-                <div class="letters">ب - م - و - ف</div>
-                <p>Läpparna: Här bor B, M, W och F.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 4rem;">👃</div>
-                <h1>٥. الخيشوم (الأنف)</h1>
-                <div class="explanation">بيت صوت "الغنة" (الرنين الجميل) الذي يصاحب الميم والنون.</div>
-                <p>Näsan: Här bor ljudet Ghunnah (surrandet).</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #10b981;">
-                <div style="font-size: 5rem;">🪞</div>
-                <h1>نشاط ١: اختبار المرآة</h1>
-                <p><b>Ar:</b> انطق (ب) وراقب كيف تنطبق شفتاك. ثم انطق (ح) وراقب حلقك في المرآة!</p>
-                <p><b>Sv:</b> Säg "Ab" och se hur läpparna stängs.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #10b981;">
-                <div style="font-size: 5rem;">🤸‍♂️</div>
-                <h1>نشاط ٢: جمباز اللسان</h1>
-                <p><b>Ar:</b> حاول لمس أسنانك العليا بلسانك وقل (ط). هل شعرت ببيت اللسان؟</p>
-                <p><b>Sv:</b> Tryck tungan mot övre tänderna och säg "Ta".</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #10b981;">
-                <div style="font-size: 5rem;">🎨</div>
-                <h1>نشاط ٣: ارسم خريطتك</h1>
-                <p>ارسم وجهاً ولون الأماكن الخمسة (البيوت) بألوانك المفضلة!</p>
-                <button onclick="jumpTo('index')" style="background: #1e293b; color: white; padding: 15px 30px; border-radius: 50px; border: none; margin-top: 20px;">العودة للقائمة 🏠</button>
-            </div>
-        </div>
-
-        <div class="nav-container" style="position: sticky; bottom: 30px; left: 0; right: 0; z-index: 1000; pointer-events: none;">
-            <div class="nav-row" style="pointer-events: auto; display: flex; justify-content: center; gap: 5px; background: rgba(0,0,0,0.5); padding: 10px; border-radius: 20px;">
-                <button onclick="sideMove('cap9', 0)" style="background:#38bdf8;">البداية</button>
-                <button onclick="sideMove('cap9', 2)" style="background:#38bdf8;">الخريطة</button>
-                <button onclick="sideMove('cap9', 3)" style="background:#0ea5e9;">١.الجوف</button>
-                <button onclick="sideMove('cap9', 4)" style="background:#0ea5e9;">٢.الحلق</button>
-                <button onclick="sideMove('cap9', 5)" style="background:#0ea5e9;">٣.اللسان</button>
-                <button onclick="sideMove('cap9', 6)" style="background:#0ea5e9;">٤.الشفاه</button>
-                <button onclick="sideMove('cap9', 7)" style="background:#0ea5e9;">٥.الأنف</button>
-                <button onclick="sideMove('cap9', 8)" style="background:#10b981;">لعب 🪞</button>
-                <button onclick="sideMove('cap9', 9)" style="background:#10b981;">لعب 🤸‍♂️</button>
-                <button onclick="sideMove('cap9', 10)" style="background:#10b981;">رسم 🎨</button>
-            </div>
-        </div>
-
-    </div> 
-
-
-
-
-
-
-<div id="cap10" class="chapter-section" style="background: #312e81; position: sticky;">
-        
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 4rem;">🎭</div>
-                <h1>مدرسة مواهب الحروف</h1>
-                <p>كل حرف له "موهبة" أو "صفة" تميزه عن غيره. لنكتشف شخصيات الحروف العجيبة!</p>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>١. مَوهبة الهواء (الهمس) 🌬️</h1>
-                <div class="explanation"><b>الشرح:</b> هذه الحروف "خجولة"، عندما تنطقها يخرج معها هواء كثير وكأنك تهمس لصديقك.</div>
-                <div class="letters">فَحَثَّهُ شَخْصٌ سَكَتْ</div>
-                <p>ضع يدك أمام فمك وقل (سسسس).. هل شعرت بالهواء؟</p>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>٢. مَوهبة القوة (الجهر) 📢</h1>
-                <div class="explanation"><b>الشرح:</b> حروف شجاعة وقوية تحبس الهواء ولا تخرجه عند النطق.</div>
-                <p>باقي الحروف (مثل: ب، ط، د) هي حروف مجهورة وقوية.</p>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>٣. مَوهبة التوقف (الشدة) 🛑</h1>
-                <div class="explanation"><b>الشرح:</b> هذه الحروف تحبس الصوت تماماً خلفها ولا تسمح له بالمرور إلا بقوة!</div>
-                <div class="letters">أَجِدْ قَطٍ بَكَتْ</div>
-                <div class="explanation" style="background: #fef3c7;">تحدي: قل (أبْ).. الصوت ينقطع فوراً، لا يمكن تطويله!</div>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>٤. مَوهبة الجريان (الرخاوة) 🌊</h1>
-                <div class="explanation"><b>الشرح:</b> حروف ناعمة تسمح للصوت أن يجري معها كالنهر بجمال.</div>
-                <p>مثل حرف (س) أو (ش).. الصوت يطول ويجري!</p>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>٥. الحروف الضخمة (الاستعلاء) 🐘</h1>
-                <div class="explanation"><b>الشرح:</b> هذه الحروف تحب الأكل كثيراً! صوتها يملأ الفم ويجعل اللسان يرتفع للسماء.</div>
-                <div class="letters">خُصَّ ضَغْطٍ قِظْ</div>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>٦. مَوهبة الالتصاق (الإطباق) 🧱</h1>
-                <div class="explanation"><b>الشرح:</b> يلتصق لسانك بسقف الفم تماماً كأنه يغلق الباب بإحكام.</div>
-                <div class="letters">ص - ض - ط - ظ</div>
-                <p>لاحظ كيف يلتصق لسانك كله بالأعلى عند نطق (ط)!</p>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>٧. مَوهبة السرعة (الإذلاق) 🏃‍♂️</h1>
-                <div class="explanation"><b>الشرح:</b> حروف سريعة جداً تخرج من طرف اللسان أو الشفاه بلمحة بصر.</div>
-                <div class="letters">فَرَّ مِـن لُبّ</div>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>٨. مَوهبة العصفور (الصفير) 🐦</h1>
-                <div class="explanation"><b>الشرح:</b> صوت حاد وجميل يشبه صفير العصفور أو طنين النحلة.</div>
-                <div class="letters">ص - ز - س</div>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>٩. مَوهبة الكرة (القلقلة) 🏀</h1>
-                <div class="explanation"><b>الشرح:</b> هذه الحروف تقفز مثل الكرة التي تضرب الأرض وترتد بسرعة!</div>
-                <div class="letters">قُطْبُ جَد</div>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>١٠. مَوهبة النعومة (اللين) ☁️</h1>
-                <div class="explanation"><b>الشرح:</b> حروف ناعمة وسهلة، تخرج كأنك تتزحلق على الجليد.</div>
-                <div class="letters">و - ي</div>
-                <p>مثل كلمة: (قَـوْم) أو (بَـيْت).</p>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>١١. مَوهبة تغيير الطريق (الانحراف) 🔄</h1>
-                <div class="explanation"><b>الشرح:</b> يميل الصوت ويغير طريقه ليهرب من الجوانب بجمال.</div>
-                <div class="letters">ل - ر</div>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>١٢. مَوهبة الاهتزاز (التكرير) 🔂</h1>
-                <div class="explanation"><b>الشرح:</b> لسانك يرتعش بسرعة البرق عند نطق الراء.</div>
-                <p>نشاط: قل (ررر) مثل محرك السيارة، ولكن أوقف لسانك بسرعة!</p>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>١٣. مَوهبة الانتشار (التفشي) 💨</h1>
-                <div class="explanation"><b>الشرح:</b> حرف نشيط ينشر الهواء في كل الفم مثل العطر!</div>
-                <div class="letters">ش</div>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>١٤. مَوهبة التمدد (الاستطالة) 📏</h1>
-                <div class="explanation"><b>الشرح:</b> حرف الضاد يمتد صوته على طول جانب اللسان كأنه قطار طويل.</div>
-                <div class="letters">ض</div>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card">
-                <h1>١٥. مَوهبة الرنين (الغنة) 🐝</h1>
-                <div class="explanation"><b>الشرح:</b> صوت جميل يخرج من الأنف يصاحب الميم والنون المشددتين.</div>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card" style="border-color: #10b981;">
-                <h1>🧪 نشاط: مختبر الأصوات</h1>
-                <p>أنا حرف أهتز كثيراً (تكرير) وأغير طريقي (انحراف).. من أنا؟</p>
-                <h2 style="color: #059669;">الجواب: حرف الراء (ر)</h2>
-            </div>
-        </div>
-
-        <div class="slide ar-slide">
-            <div class="card" style="border-color: #f59e0b;">
-                <h1>🎨 نشاط: ارسم الحرف الضخم</h1>
-                <p>اختر واحداً من حروف "الإطباق" (ص ض ط ظ) وارسمه كأنه جدار قوي!</p>
-            </div>
-        </div>
-
-        <div class="slide sv-slide">
-            <div class="card" style="border-color: #2563eb;">
-                <h2>Vem är bokstaven? 🕵️‍♂️</h2>
-                <div class="sv-explanation" style="border-left: 8px solid #2563eb;">
-                    <b>Hams (🌬️):</b> Viskar med mycket luft.<br>
-                    <b>Shiddah (🛑):</b> Stoppar ljudet tvärt.<br>
-                    <b>Qalqalah (🏀):</b> Studsar som en boll.
-                </div>
-            </div>
-        </div>
-
-        <div class="slide sv-slide">
-            <div class="card" style="border-color: #2563eb;">
-                <h2>Bokstävernas Krafter 🦸‍♂️</h2>
-                <div class="sv-explanation" style="border-left: 8px solid #2563eb;">
-                    <b>Istitala (📏):</b> Långt ljud som ett tåg (Ddad).<br>
-                    <b>Takreer (🔂):</b> Vibration (Ra).<br>
-                    <b>Itbaq (🧱):</b> Tungan klistras (Starkt!).
-                </div>
-            </div>
-        </div>
-
-        <div class="nav-container" style="position: sticky; bottom: 20px; left: 0; right: 0; z-index: 1000; pointer-events: none;">
-            <div style="pointer-events: auto; display: flex; flex-direction: column; align-items: center; gap: 5px;">
-                <div class="nav-row" style="background: rgba(0,0,0,0.7); padding: 8px; border-radius: 15px;">
-                    <button onclick="sideMove('cap10', 1)">🌬️ هواء</button>
-                    <button onclick="sideMove('cap10', 3)">🛑 توقف</button>
-                    <button onclick="sideMove('cap10', 5)">🐘 ضخامة</button>
-                    <button onclick="sideMove('cap10', 6)">🧱 التصاق</button>
-                    <button onclick="sideMove('cap10', 7)">🏃‍♂️ سرعة</button>
-                </div>
-                <div class="nav-row" style="background: rgba(0,0,0,0.7); padding: 8px; border-radius: 15px;">
-                    <button onclick="sideMove('cap10', 8)">🐦 عصفور</button>
-                    <button onclick="sideMove('cap10', 9)">🏀 كرة</button>
-                    <button onclick="sideMove('cap10', 10)">☁️ نعومة</button>
-                    <button onclick="sideMove('cap10', 11)">🔄 ميل</button>
-                    <button onclick="sideMove('cap10', 12)">🔂 اهتزاز</button>
-                    <button onclick="sideMove('cap10', 13)">💨 انتشار</button>
-                    <button onclick="sideMove('cap10', 14)">📏 تمدد</button>
-                    <button onclick="sideMove('cap10', 15)">🐝 رنين</button>
-                </div>
-                <div class="nav-row" style="background: rgba(0,0,0,0.7); padding: 8px; border-radius: 15px;">
-                    <button onclick="sideMove('cap10', 16)" style="background:#059669; color:white;">🧪 مختبر</button>
-                    <button onclick="sideMove('cap10', 17)" style="background:#d97706; color:white;">🎨 رسم</button>
-                    <button onclick="sideMove('cap10', 18)" style="background:#2563eb; color:white;">Sv 1</button>
-                    <button onclick="sideMove('cap10', 19)" style="background:#2563eb; color:white;">Sv 2</button>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-<div id="cap11" class="chapter-section" style="background: #065f46;">
-        
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 5rem;">🏘️</div>
-                <h1>١. مَن هو جار الحرف؟</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> الحروف مثلنا تماماً! عندما تلتقي في الكلمات، تنشأ بينها علاقات. فإما أن يكونا توأمين متطابقين، أو جيراناً يسكنون في نفس البيت.
-                </div>
-                <p>Precis som människor har bokstäver grannar och vänner.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 4rem;">👬</div>
-                <h1>٢. المتماثلان (التوأم المتطابق)</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> هما حرفان خرجا من نفس العنوان (المخرج) ولهما نفس الشخصية (الصفات). باختصار: الحرف ونفسه!
-                </div>
-                <div class="example-box">ب + ب | د + د</div>
-                <p>Mithlayn: Enäggstvillingar (Identiska).</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 4rem;">🏠</div>
-                <h1>٣. المتجانسان (شركاء السكن)</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> هما حرفان يسكنان في نفس البيت تماماً (نفس المخرج)، ولكن لكل واحد منهما شخصية مختلفة (صفات مختلفة).
-                </div>
-                <div class="example-box">ت — د — ط</div>
-                <p>Mutajanisayn: Rumskompisar (Samma makhraj).</p>
-                
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 4rem;">🚲</div>
-                <h1>٤. المتقاربان (جيران الشارع)</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> هما حرفان يسكنان في بيوت قريبة جداً من بعضها، وشخصيتهما قريبة أيضاً.
-                </div>
-                <div class="example-box">ق — ك | ل — ر</div>
-                <p>Mutaqaribayn: Grannar (Nära varandra).</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card">
-                <div style="font-size: 4rem;">🚀</div>
-                <h1>٥. المتباعدان (الأصدقاء البعيدون)</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> هما حرفان يسكنان في بيوت بعيدة جداً عن بعضهما. هنا ينطق كل حرف بوضوح تام.
-                </div>
-                <div class="example-box">م — ح | ء — ل</div>
-                <p>Mutaba'idayn: Distansvänner (Långt ifrån).</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #fbbf24;">
-                <div style="font-size: 5rem;">🔍</div>
-                <h1>نشاط ١: رادار التوائم</h1>
-                <p>سأعطيك كلمتين، قل لي هل هما توأم (متماثلان)؟</p>
-                <div class="example-box">١. قَد دَّخلوا | ٢. يَلْهَث ذَّلك</div>
-                <div class="explanation" style="text-align: center; border-right-color: #fbbf24;">الجواب: رقم ١ هو التوأم (د + د)</div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: gold;">
-                <div style="font-size: 5rem;">🏆</div>
-                <h1>بطل علاقات الحروف</h1>
-                <p>أنت الآن تعرف كيف تتعامل الحروف مع بعضها! هل هي مستعدة للذوبان (إدغام) أم تريد البقاء واضحة؟</p>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-row">
-                <button onclick="sideMove('cap11', 0)">البداية🏘️</button>
-                <button onclick="sideMove('cap11', 1)">التوأم👬</button>
-                <button onclick="sideMove('cap11', 2)">السكن🏠</button>
-                <button onclick="sideMove('cap11', 3)">الجيران🚲</button>
-                <button onclick="sideMove('cap11', 4)">البعيد🚀</button>
-                <button onclick="sideMove('cap11', 5)" style="background:#fbbf24; color:#000;">لعبة🔍</button>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-<div id="cap12" class="chapter-section" style="background: #be123c;">
-        
-        <div class="slide">
-            <div class="card" style="border-color: #fb7185;">
-                <div style="font-size: 5rem;">🚦</div>
-                <h1>١. إشارات مرور القرآن</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> عندما نقرأ القرآن، لا يمكننا التوقف في أي مكان نحبه! هناك "إشارات مرور" تخبرنا متى نتوقف (وقف) ومتى نكمل (ابتداء) لكي يظل المعنى جميلاً ومفهوماً.
-                </div>
-                <p>När vi läser Koranen måste vi veta var vi ska stanna (Waqf) och börja (Ibtida).</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #fb7185;">
-                <div class="traffic-light"><div class="light"></div><div class="light"></div><div class="light green"></div></div>
-                <h1>٢. الوقف التام (الضوء الأخضر)</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> هنا انتهى الكلام تماماً والمعنى مكتمل. يمكنك التوقف وأخذ نفس عميق بكل راحة. غالباً يكون عند نهاية الآيات.
-                </div>
-                <div class="symbol-box"><div class="symbol">م</div><div class="symbol"> قلي</div></div>
-                <p>🟢 <b>Tamm:</b> Grönt ljus! Här är meningen slut. Stanna gärna.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #fb7185;">
-                <div class="traffic-light"><div class="light"></div><div class="light yellow"></div><div class="light"></div></div>
-                <h1>٣. الوقف الكافي (الضوء الأصفر)</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> المعنى مفهوم، لكن الكلام ما زال مرتبطاً بما بعده قليلاً. يمكنك التوقف، لكن الأفضل أن تكمل إذا كان لديك نفس.
-                </div>
-                <div class="symbol-box"><div class="symbol">ج</div><div class="symbol"> صلي</div></div>
-                <p>🟡 <b>Kafi:</b> Gult ljus! Du kan stanna, men det är okej att fortsätta.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #fb7185;">
-                <div class="traffic-light"><div class="light red"></div><div class="light"></div><div class="light"></div></div>
-                <h1>٤. الوقف القبيح (الضوء الأحمر)</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> حذارِ! التوقف هنا يفسد المعنى تماماً. لا تتوقف أبداً إلا إذا انقطع نفسك فجأة، وعليك العودة للكلمة السابقة.
-                </div>
-                <div class="symbol-box"><div class="symbol">لا</div></div>
-                <p>🔴 <b>Qabih:</b> Rött ljus! Stanna inte här, det förstör meningen.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #fb7185;">
-                <div style="font-size: 4rem;">🚀</div>
-                <h1>٥. كيف أبدأ من جديد؟</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> بعد أن تأخذ نفساً، ابدأ دائماً من كلمة تعطي معنى مفيداً. لا تبدأ من منتصف حكاية أو كلمة لا يفهم منها شيء.
-                </div>
-                <p>Börja alltid från ett ord som ger en tydlig mening.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card sv-card" style="border-color: #be123c;">
-                <h2>Håll utkik efter tecknen! 🔍</h2>
-                <div class="sv-explanation" style="border-left-color: #be123c;">
-                    I Mus'haf (Koranen) finns små bokstäver ovanför orden:<br><br>
-                    <b>(مـ)</b> = Du MÅSTE stanna.<br>
-                    <b>(لا)</b> = Stanna INTE.<br>
-                    <b>(ج)</b> = Du väljer själv.
-                </div>
-                <div style="font-size: 3rem; margin-top: 10px;">📖</div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #059669;">
-                <div style="font-size: 5rem;">🌬️</div>
-                <h1>نشاط ١: تحدي النَفَس</h1>
-                <p>حاول قراءة سورة الإخلاص كاملة بنَفَس واحد. إذا تعبت، أين هو أفضل مكان للتوقف؟</p>
-                <div class="explanation" style="text-align: center; border-right-color: #059669;">
-                    الجواب: دائماً عند رؤوس الآيات (نهاية كل آية).
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #d97706;">
-                <div style="font-size: 5rem;">🕵️‍♂️</div>
-                <h1>نشاط ٢: محقق المصحف</h1>
-                <p>افتح المصحف وابحث عن علامة (ج) وعلامة (قلي). ماذا تعني هذه العلامات للسائق (القاريء)؟</p>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-row">
-                <button onclick="sideMove('cap12', 0)">البداية🚦</button>
-                <button onclick="sideMove('cap12', 1)">أخضر🟢</button>
-                <button onclick="sideMove('cap12', 2)">أصفر🟡</button>
-                <button onclick="sideMove('cap12', 3)">أحمر🔴</button>
-                <button onclick="sideMove('cap12', 5)" style="background:#2563eb; color:white;">Sve🇸🇪</button>
-                <button onclick="sideMove('cap12', 6)" style="background:#059669; color:white;">تحدي🌬️</button>
-                <button onclick="sideMove('cap12', 7)" style="background:#d97706; color:white;">بحث🕵️‍♂️</button>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-<div id="cap13" class="chapter-section" style="background: #5b21b6;">
-        
-        <div class="slide">
-            <div class="card" style="border-color: #a78bfa;">
-                <div class="sajdah-icon" style="font-size: 5rem; color: #7c3aed; margin: 20px 0;">🙇‍♂️</div>
-                <h1>١. ما هي سجدة التلاوة؟</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> هي سجدة "شكر وحب" لله. عندما نقرأ آية فيها أمر بالسجود، نقوم نحن أيضاً بالسجود فوراً لنشارك المؤمنين هذا الفضل العظيم.
-                </div>
-                <p>Sajdah at-Tilawah: En speciell bön av kärlek när vi läser vissa verser.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #a78bfa;">
-                <h1>٢. كيف أعرف مكان السجدة؟</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> القرآن الكريم يضع لنا علامة مميزة جداً تشبه "المحراب" الصغير فوق الكلمة، وخطاً تحت الكلمة التي يجب أن نسجد عندها.
-                </div>
-                <div class="symbol-card" style="background: #ede9fe; padding: 15px; border-radius: 20px; font-size: 2.5rem; color: #4c1d95; font-weight: bold; display: inline-block;">۩</div>
-                <p>Leta efter denna symbol ۩ i din Mus'haf!</p>
-                
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #a78bfa;">
-                <div style="font-size: 4rem;">✨</div>
-                <h1>٣. كيف أسجد للتلاوة؟</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> كبر (الله أكبر) واسجد سجدة واحدة، وقل فيها "سبحان ربي الأعلى"، ثم كبر وارفع رأسك. لا نحتاج لتشهد أو تسليم.
-                </div>
-                <p>Gör bara en Sajdah, säg Allahu Akbar och bugar.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #a78bfa;">
-                <div style="font-size: 4rem;">🛡️</div>
-                <h1>٤. سر السجدة والشيطان</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> عندما يسجد ابن آدم، يبكي الشيطان ويفر بعيداً! السجدة هي أقوى سلاح ضد الشيطان وهي طريقك للجنة.
-                </div>
-                <p>När vi bugar blir shaytan ledsen och flyr! 🛡️</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card sv-card" style="border-color: #be123c;">
-                <h2>Summary for Sajdah 🙇‍♂️</h2>
-                <div class="sv-explanation" style="border-left-color: #be123c;">
-                    1. <b>Varför?</b> För att visa kärlek till Allah.<br>
-                    2. <b>När?</b> När du ser symbolen ۩.<br>
-                    3. <b>Hur?</b> Säg Allahu Akbar, gör en Sajdah, och res dig igen.
-                </div>
-                <div style="font-size: 3rem; margin-top: 10px;">🌟</div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #059669;">
-                <div style="font-size: 5rem;">🕵️‍♀️</div>
-                <h1>نشاط: صائد السجدات</h1>
-                <p>افتح سورة "العلق" (آخر سورة في الجزء 30). هل تستطيع العثور على رمز السجدة ۩ في آخر آية؟</p>
-                <div class="symbol-card" style="background: #ecfdf5; border: 2px solid #059669;">وَاسْجُدْ وَاقْتَرِب ۩</div>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-row">
-                <button onclick="sideMove('cap13', 0)">السجدة🙇‍♂️</button>
-                <button onclick="sideMove('cap13', 1)">الرمز🔍</button>
-                <button onclick="sideMove('cap13', 2)">الكيفية✨</button>
-                <button onclick="sideMove('cap13', 3)">السر🛡️</button>
-                <button onclick="sideMove('cap13', 4)" style="background:#be123c; color:white;">Sve🇸🇪</button>
-                <button onclick="sideMove('cap13', 5)" style="background:#059669; color:white;">بحث🕵️‍♀️</button>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-
-
-
-
-
-
-
-<div id="cap14" class="chapter-section" style="background: #0369a1;">
-        
-        <div class="slide">
-            <div class="card" style="border-color: #7dd3fc;">
-                <div style="font-size: 5rem;">👑</div>
-                <h1>١. استقبال الملك</h1>
-                <div class="explanation">
-                    <b>الشرح:</b> القرآن ليس مجرد كتاب، هو "كلام الله". تخيل أنك ستقابل ملكاً عظيماً، كيف ستتجهز له؟ هكذا نتجهز لقراءة القرآن بقلبنا وأبداننا.
-                </div>
-                <p>Koranen är Allahs ord. Vi visar respekt med både hjärta och kropp.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #7dd3fc;">
-                <h1>٢. كيف أتجهز بجسدي؟</h1>
-                <div class="letter-grid" style="grid-template-columns: 1fr 1fr;">
-                    <div class="letter-item" style="font-size: 1.1rem; padding: 15px;">🧼 الوضوء والنظافة</div>
-                    <div class="letter-item" style="font-size: 1.1rem; padding: 15px;">🪥 السواك وتطيب الفم</div>
-                    <div class="letter-item" style="font-size: 1.1rem; padding: 15px;">👕 ملابس نظيفة</div>
-                    <div class="letter-item" style="font-size: 1.1rem; padding: 15px;">🕋 استقبال القبلة</div>
-                </div>
-                <p>Vi gör Wudu och ser fina ut inför Allah.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: #7dd3fc;">
-                <h1>٣. كيف أقرأ بأدب؟</h1>
-                <div class="explanation">
-                    <b>١. الاستعاذة والبسملة:</b> لطرد الشيطان.<br>
-                    <b>٢. الترتيل:</b> القراءة ببطء وجمال.<br>
-                    <b>٣. التدبر:</b> محاولة فهم مراد الله.<br>
-                    <b>٤. الإنصات:</b> الاستماع بهدوء إذا قرأ غيرك.
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card sv-card" style="border-color: #0ea5e9;">
-                <h2>Att visa respekt 📖</h2>
-                <div class="sv-explanation" style="border-left-color: #0ea5e9;">
-                    ✨ <b>Renhet:</b> Gör Wudu och sitta fint.<br>
-                    ✨ <b>Fokus:</b> Vänd dig mot Qibla.<br>
-                    ✨ <b>Lyssna:</b> Var helt tyst när någon annan läser.<br>
-                    ✨ <b>Plats:</b> Ställ alltid Mus'haf på en hög och ren plats.
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #10b981;">
-                <div style="font-size: 5rem;">🏠</div>
-                <h1>نشاط ١: ركن القرآن</h1>
-                <p><b>Ar:</b> صمم "ركناً خاصاً" في بيتك للقرآن فيه سجادة ومصحف ورائحة طيبة.</p>
-                <p><b>Sv:</b> Skapa en "Koran-hörna" hemma där det alltid är rent och lugnt.</p>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card act-card" style="border-color: #10b981;">
-                <div style="font-size: 5rem;">🐢</div>
-                <h1>نشاط ٢: تحدي السلحفاة</h1>
-                <div class="explanation" style="text-align: center; border-right-color: #10b981;">
-                    اقرأ سورة الفاتحة بأبطأ وأجمل صوت عندك. حاول أن تشعر بكل حرف. <br>
-                    <b>الترتيل أجمل من السرعة!</b>
-                </div>
-            </div>
-        </div>
-
-        <div class="slide">
-            <div class="card" style="border-color: gold;">
-                <div style="font-size: 5rem;">🎓</div>
-                <h1>مبارك يا بطل التجويد!</h1>
-                <p>لقد أتممت رحلة التجويد الممتعة. أنت الآن تعرف كيف تنطق الحروف، وتعطيها حقها، وتحترم كلام الله.</p>
-                <h2 style="color: #0369a1;">اقرأ وارتقِ!</h2>
-            </div>
-        </div>
-
-        <div class="nav-container">
-            <div class="nav-row">
-                <button onclick="sideMove('cap14', 0)">الملك👑</button>
-                <button onclick="sideMove('cap14', 1)">التجهز🧼</button>
-                <button onclick="sideMove('cap14', 2)">القراءة📖</button>
-                <button onclick="sideMove('cap14', 3)" style="background:#2563eb; color:white;">Sve🇸🇪</button>
-                <button onclick="sideMove('cap14', 4)" style="background:#10b981; color:white;">ركن🏠</button>
-                <button onclick="sideMove('cap14', 6)" style="background:#d97706; color:white;">تخرج🎓</button>
-            </div>
-        </div>
-    </div>
-
-
-
-
-
-<div id="cap15" class="chapter-section" style="background: radial-gradient(circle, #1e1b4b, #0f172a);">
-        <div class="slide">
-            <div class="card" id="quiz-main-card" style="border: 12px solid #fbbf24; min-height: 550px; display: flex; flex-direction: column; justify-content: center; align-items: center; background: white;">
-                
-                <div id="quiz-start" style="display: block; text-align: center; width: 100%;">
-                    <div style="font-size: 100px; animation: bounce 1s infinite alternate;">🏆</div>
-                    <h1 style="font-family: 'Amiri'; font-size: 3rem; color: #1e1b4b;">تحدي الأبطال الـ 30</h1>
-                    <p style="font-size: 1.5rem; color: #444;">هل أنت مستعد للفوز بلقب قارئ القرآن الماهر؟</p>
-                    <button onclick="startFinalQuiz()" style="background: gold; color: black; padding: 25px 70px; border-radius: 50px; font-size: 2rem; border: none; cursor: pointer; font-weight: bold; box-shadow: 0 10px 20px rgba(0,0,0,0.2);">ابدأ المهرجان! 🚀</button>
-                </div>
-
-                <div id="quiz-game" style="display: none; text-align: center; width: 100%;">
-                    <div style="display: flex; justify-content: space-between; font-weight: bold; margin-bottom: 20px; color: #d97706; font-size: 1.2rem;">
-                        <span id="q-idx-display">السؤال ١ / ٣٠</span>
-                        <span id="star-display">⭐ النجوم: ٠</span>
-                    </div>
-                    <h2 id="question-text" style="font-size: 2.2rem; color: #000 !important; margin-bottom: 30px; font-family: 'Amiri'; line-height: 1.4;">جاري التحميل...</h2>
-                    <div id="options-box" style="display: flex; flex-direction: column; gap: 12px;"></div>
-                    <div id="quiz-feedback" style="margin-top: 20px; font-size: 1.5rem; font-weight: bold; min-height: 60px; border-radius: 20px; padding: 15px; display: flex; align-items: center; justify-content: center;"></div>
-                </div>
-
-                <div id="quiz-celebration" style="display: none; text-align: center; width: 100%;">
-                    <div id="confetti" style="font-size: 100px; margin-bottom: 20px;">🎉🎊⭐</div>
-                    <h1 style="color: #1e1b4b; font-size: 3.5rem; font-family: 'Amiri';">مبارك يا بطل القرآن!</h1>
-                    <div style="background: gold; padding: 25px; border-radius: 30px; display: inline-block; margin: 20px 0;">
-                        <p id="final-result-text" style="font-size: 2.2rem; color: #000; font-weight: bold; margin: 0;"></p>
-                    </div>
-                    <p style="font-size: 1.6rem; color: #333; font-family: 'Amiri';">لقد أصبحت الآن شمساً تضيء الدنيا بتلاوتك!</p>
-                    <button onclick="location.reload()" style="background: #4f46e5; color: white; padding: 20px 50px; border-radius: 50px; border: none; cursor: pointer; font-size: 1.5rem; font-weight: bold;">إعادة التحدي 🔄</button>
-                </div>
-
-            </div>
-        </div>
-    </div>
-
-    <script>
-        // دالة التنقل الأفقي والعمودي (تأكد أنها ليست مكررة في مكان آخر)
-        function jumpTo(id) {
-            const el = document.getElementById(id);
-            if (el) el.scrollIntoView({ behavior: 'smooth' });
-        }
-        function sideMove(cid, idx) {
-            const sec = document.getElementById(cid);
-            if (sec) sec.scrollTo({ left: window.innerWidth * idx, behavior: 'smooth' });
-        }
-
-        // الأسئلة (30 سؤالاً)
-        const finalQuestions = [
-            { q: "كم عدد الحروف المشاغبة التي لا تمسك يد ما بعدها؟", a: ["٤ حروف", "٦ حروف", "٨ حروف"], c: 1, h: "تذكر: ا و د ذ ر ز" },
-            { q: "ماذا نفعل للنون الساكنة إذا جاء بعدها حرف (ب)؟", a: ["إظهار", "إقلاب 🪄", "إدغام"], c: 1, h: "تتحول النون إلى ميم" },
-            { q: "حروف (قُطْبُ جَد) هي حروف أي حكم؟", a: ["القلقلة 🏀", "المد", "الإظهار"], c: 0, h: "تذكر الكرة التي تقفز" },
-            { q: "المد اللازم العملاق (الضالين) كم حركة نمده؟", a: ["٢", "٤", "٦ 🐘"], c: 2, h: "أطول مد في القرآن" },
-            { q: "من أين يخرج صوت الغنة (طنين النحلة)؟", a: ["اللسان", "الخيشوم 👃", "الحلق"], c: 1, h: "يخرج من الأنف" },
-            { q: "علامة الوقف (لا) في المصحف تعني؟", a: ["توقف", "ممنوع التوقف 🛑", "أنت مخير"], c: 1, h: "هذا هو الضوء الأحمر" },
-            { q: "المد الطبيعي (الأصلي) كم حركة نمده؟", a: ["٢ 🌱", "٤", "٦"], c: 0, h: "حركتان فقط" },
-            { q: "أي حرف يرتعش فيه اللسان (تكرير)؟", a: ["ل", "ن", "ر 🔂"], c: 2, h: "مثل محرك السيارة" },
-            { q: "ما هو لقب الحروف السبعة (خص ضغط قظ)؟", a: ["نحيفة", "سمينة 🐘", "خجولة"], c: 1, h: "تأكل كثيراً!" },
-            { q: "ماذا نفعل إذا رأينا علامة (۩) في المصحف؟", a: ["نتوقف", "نسجد 🙇‍♂️", "نكبر"], c: 1, h: "هذه سجدة تلاوة" },
-            { q: "ما هو البيت الأكبر الذي يسكنه ١٨ حرفاً؟", a: ["الحلق", "اللسان 👅", "الجوف"], c: 1, h: "لسانك هو الملك" },
-            { q: "حرف الراء يكون نحيفاً (مرققاً) إذا كان؟", a: ["فوقه فتحة", "فوقه ضمة", "تحته كسرة 🦋"], c: 2, h: "الكسرة تجعلنا نبتسم" },
-            { q: "كم عدد مخارج الحروف الرئيسية؟", a: ["٣", "٥ 🏘️", "٧"], c: 1, h: "الجوف، الحلق، اللسان، الشفتان، الخيشوم" },
-            { q: "صفة (الهمس) تعني خروج الكثير من الـ...؟", a: ["هواء 🌬️", "صوت", "ماء"], c: 0, h: "كأنك تهمس بسر" },
-            { q: "حرف (ض) صوته يمتد طويلاً، ما اسم هذه الموهبة؟", a: ["قلقلة", "استطالة 📏", "صفير"], c: 1, h: "يمتد كالقطار" },
-            { q: "ما هو حكم النون في (مَنْ آمَنَ)؟", a: ["إظهار 💡", "إدغام", "إخفاء"], c: 0, h: "الهمزة من حروف الحلق" },
-            { q: "قبل لمس المصحف، ماذا يجب أن نفعل؟", a: ["نأكل", "نتوضأ 🧼", "نلعب"], c: 1, h: "النظافة من الإيمان" },
-            { q: "المد المتصل يكون عندما تجتمع الهمزة مع المد في؟", a: ["كلمة واحدة 🤝", "كلمتين", "سورتين"], c: 0, h: "إنهما في نفس البيت" },
-            { q: "حرف (ش) ينشر الهواء كالعطر، ما اسم الصفة؟", a: ["انحراف", "تفشي 💨", "لين"], c: 1, h: "ينتشر الهواء في الفم" },
-            { q: "ماذا نقول في سجدة التلاوة؟", a: ["سبحان ربي الأعلى 🙇‍♂️", "الحمد لله", "أستغفر الله"], c: 0, h: "مثل سجود الصلاة" },
-            { q: "حروف (ء هـ ع ح غ خ) تسكن في؟", a: ["اللسان", "الحلق 🦒", "الشفتين"], c: 1, h: "تخرج من الرقبة" },
-            { q: "أي علامة وقف تعني (الوقف أولى وأفضل)؟", a: ["صلي", "قلي 🛑", "ج"], c: 1, h: "قلي تعني قف" },
-            { q: "حرفا (و - ي) الساكنان المفتوح ما قبلهما يسمى؟", a: ["بدل", "لين ☁️", "عوض"], c: 1, h: "سهل ونعومة" },
-            { q: "إذا التقى حرفان متطابقان (ب + ب) نسميهما؟", a: ["متماثلان 👬", "متقاربان", "متباعدان"], c: 0, h: "توأم متطابق" },
-            { q: "صفة (الصفير) تشبه صوت العصفور في حرف؟", a: ["م", "س 🐦", "ل"], c: 1, h: "سسسسس" },
-            { q: "المد العارض للسكون يحدث عندما؟", a: ["نبدأ القراءة", "نتوقف عند الكلمة 🛑", "نسرع"], c: 1, h: "بساط التوقف" },
-            { q: "حرف (ف) يخرج من؟", a: ["الحلق", "اللسان", "الشفة والأسنان 👄"], c: 2, h: "جرب نطق: أف" },
-            { q: "عندما نقول (بِسْمِ اللَّه)، اللام تكون؟", a: ["سمينة", "نحيفة 🦋", "طويلة"], c: 1, h: "بسبب الكسرة قبلها" },
-            { q: "ما هو أقوى مد في القرآن؟", a: ["المد الطبيعي", "المد اللازم 🐘", "المد المنفصل"], c: 1, h: "صاحب الـ ٦ حركات" },
-            { q: "هل أنت بطل تجويد الآن؟", a: ["نعم بالتأكيد! 🏆", "سأحاول", "ليس بعد"], c: 0, h: "أنت رائع فعلاً!" }
-        ];
-
-        let quizIdx = 0;
-        let quizScore = 0;
-        const arComp = ["أحسنت يا ذكي! ✨", "ممتاز، استمر! 🌟", "يا لك من بطل! 🏆", "إجابة عبقرية! 💎", "مذهل، إجابة صحيحة! 🔥"];
-
-        function startFinalQuiz() {
-            document.getElementById('quiz-start').style.display = 'none';
-            document.getElementById('quiz-game').style.display = 'block';
-            quizIdx = 0;
-            quizScore = 0;
-            loadQ();
-        }
-
-        function loadQ() {
-            if (quizIdx >= finalQuestions.length) {
-                showFinalCelebration();
-                return;
-            }
-            const currentQ = finalQuestions[quizIdx];
-            document.getElementById('question-text').innerText = currentQ.q;
-            document.getElementById('q-idx-display').innerText = `السؤال ${quizIdx + 1} / ${finalQuestions.length}`;
-            document.getElementById('star-display').innerText = `⭐ النجوم: ${quizScore}`;
-            
-            const box = document.getElementById('options-box');
-            box.innerHTML = '';
-            currentQ.a.forEach((option, i) => {
-                const b = document.createElement('button');
-                b.style.cssText = "padding: 18px; border-radius: 20px; border: 3px solid #f1f5f9; background: #f8fafc; color: #1e1b4b; cursor: pointer; font-size: 1.3rem; font-weight: bold; transition: 0.2s; width: 100%;";
-                b.innerText = option;
-                b.onclick = () => checkQ(i);
-                box.appendChild(b);
-            });
-            document.getElementById('quiz-feedback').innerText = '';
-            document.getElementById('quiz-feedback').style.background = 'transparent';
-        }
-
-        function checkQ(i) {
-            const currentQ = finalQuestions[quizIdx];
-            const feed = document.getElementById('quiz-feedback');
-            if (i === currentQ.c) {
-                quizScore++;
-                feed.innerText = arComp[Math.floor(Math.random() * arComp.length)];
-                feed.style.background = "#dcfce7"; feed.style.color = "#15803d";
-                setTimeout(() => { quizIdx++; loadQ(); }, 1500);
-            } else {
-                feed.innerText = `حاول مجدداً ❌ المساعدة: ${currentQ.h}`;
-                feed.style.background = "#fee2e2"; feed.style.color = "#b91c1c";
-            }
-        }
-
-        function showFinalCelebration() {
-            document.getElementById('quiz-game').style.display = 'none';
-            document.getElementById('quiz-celebration').style.display = 'block';
-            document.getElementById('final-result-text').innerText = `النتيجة: ${quizScore} نجمة ذهبية!`;
-            setInterval(() => {
-                const emojis = ["🎉", "🎊", "⭐", "🏆", "🌟"];
-                document.getElementById('confetti').innerText = emojis[Math.floor(Math.random()*emojis.length)] + " " + emojis[Math.floor(Math.random()*emojis.length)];
-            }, 500);
-        }
-
-    </script>
-    
-
-    function jumpTo(id) {
-        document.getElementById(id).scrollIntoView({ behavior: 'smooth' });
-    }
-
-    function sideMove(chapterId, slideIndex) {
-        const section = document.getElementById(chapterId);
-        section.scrollTo({
-            left: window.innerWidth * slideIndex,
-            behavior: 'smooth'
-        });
-    }
-</script>
-     
-</body>
-</html>
